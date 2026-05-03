@@ -1,12 +1,47 @@
 --[[
- .____                  ________ ___.    _____                           __                
- |    |    __ _______   \_____  \\_ |___/ ____\_ __  ______ ____ _____ _/  |_  ___________ 
- |    |   |  |  \__  \   /   |   \| __ \   __\  |  \/  ___// ___\\__  \\   __\/  _ \_  __ \
- |    |___|  |  // __ \_/    |    \ \_\ \  | |  |  /\___ \\  \___ / __ \|  | (  <_> )  | \/
- |_______ \____/(____  /\_______  /___  /__| |____//____  >\___  >____  /__|  \____/|__|   
-         \/          \/         \/    \/                \/     \/     \/                   
-          \_Welcome to LuaObfuscator.com   (Alpha 0.10.9) ~  Much Love, Ferib 
+    PROTECTED SCRIPT
+    This script is obfuscated to protect the source code.
+]]
+local _0x5261796669656c64 = "https://sirius.menu/rayfield"
+local _0x4f72626974 = loadstring(game:HttpGet(_0x5261796669656c64))()
+local _0x57696e646f77 = _0x4f72626974:CreateWindow({Name = "Orbit Hub", LoadingTitle = "Orbit Script", LoadingSubtitle = "by Manus", Theme = "Ocean", ConfigurationSaving = {Enabled = true, FolderName = "OrbitScript", FileName = "Config"}, Discord = {Enabled = false, Invite = "", RememberJoins = true}, KeySystem = false})
+local _0x546162 = _0x57696e646f77:CreateTab("Main", 4483362458)
+local _0x53656374696f6e = _0x546162:CreateSection("Orbit Settings")
+local _0x456e61626c6564 = true
+local _0x5370656564 = 209
+local _0x44697374616e6365 = 5
+local _0x546172676574 = ""
+local _0x5253 = game:GetService("RunService")
+local _0x504c = game:GetService("Players")
+local _0x4c50 = _0x504c.LocalPlayer
+local _0x416e676c65 = 0
+local _0x436f6e6e
+local function _0x5374617274()
+    if _0x436f6e6e then _0x436f6e6e:Disconnect() end
+    _0x436f6e6e = _0x5253.Heartbeat:Connect(function(_0x6474)
+        if not _0x456e61626c6564 or _0x546172676574 == "" then return end
+        local _0x7470 = _0x504c:FindFirstChild(_0x546172676574)
+        if _0x7470 and _0x7470.Character and _0x7470.Character:FindFirstChild("HumanoidRootPart") then
+            local _0x7468 = _0x7470.Character.HumanoidRootPart
+            local _0x6c68 = _0x4c50.Character and _0x4c50.Character:FindFirstChild("HumanoidRootPart")
+            if _0x6c68 then
+                _0x416e676c65 = _0x416e676c65 + (_0x5370656564 / 100) * _0x6474 * 10
+                local _0x78 = math.cos(_0x416e676c65) * _0x44697374616e6365
+                local _0x7a = math.sin(_0x416e676c65) * _0x44697374616e6365
+                _0x6c68.CFrame = CFrame.new(_0x7468.Position + Vector3.new(_0x78, 0, _0x7a), _0x7468.Position)
+                _0x6c68.Velocity = Vector3.new(0, 0, 0)
+            end
+        end
+    end)
+end
+local function _0x53746f70() if _0x436f6e6e then _0x436f6e6e:Disconnect() _0x436f6e6e = nil end end
+_0x546162:CreateToggle({Name = "Enable Orbit", CurrentValue = true, Flag = "OrbitToggle", Callback = function(_0x76) _0x456e61626c6564 = _0x76 if _0x456e61626c6564 then _0x5374617274() else _0x53746f70() end end})
+_0x546162:CreateSlider({Name = "Orbit Speed", Range = {0, 1000}, Increment = 1, Suffix = "Speed", CurrentValue = 209, Flag = "SpeedSlider", Callback = function(_0x76) _0x5370656564 = _0x76 end})
+_0x546162:CreateSlider({Name = "Orbit Distance", Range = {0, 1000}, Increment = 1, Suffix = "Studs", CurrentValue = 5, Flag = "DistanceSlider", Callback = function(_0x76) _0x44697374616e6365 = _0x76 end})
+local function _0x47504c() local _0x6c = {} for _, _0x70 in pairs(_0x504c:GetPlayers()) do if _0x70 ~= _0x4c50 then table.insert(_0x6c, _0x70.Name) end end return _0x6c end
+local _0x5044 = _0x546162:CreateDropdown({Name = "Select Target Player", Options = _0x47504c(), CurrentOption = {""}, MultipleOptions = false, Flag = "PlayerDropdown", Callback = function(_0x6f) _0x546172676574 = _0x6f[1] end})
+_0x546162:CreateButton({Name = "Refresh Player List", Callback = function() _0x5044:Refresh(_0x47504c()) end})
+_0x4f72626974:Notify({Title = "Script Loaded", Content = "Orbit Script is ready!", Duration = 5, Image = 4483362458})
+_0x4f72626974:LoadConfiguration()
+if _0x456e61626c6564 and _0x546172676574 ~= "" then _0x5374617274() end
 
-]]--
-
-local v0=tonumber;local v1=string.byte;local v2=string.char;local v3=string.sub;local v4=string.gsub;local v5=string.rep;local v6=table.concat;local v7=table.insert;local v8=math.ldexp;local v9=getfenv or function() return _ENV;end ;local v10=setmetatable;local v11=pcall;local v12=select;local v13=unpack or table.unpack ;local v14=tonumber;local function v15(v16,v17,...) local v18=1;local v19;v16=v4(v3(v16,5),"..",function(v30) if 
