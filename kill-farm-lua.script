@@ -1,0 +1,152 @@
+-- Rayfield Library Orbit Script
+-- Created for Roblox
+
+local Rayfield = loadstring(game:HttpGet("https://sirius.menu/rayfield"))()
+
+local Window = Rayfield:CreateWindow({
+    Name = "Orbit Hub",
+    LoadingTitle = "Orbit Script",
+    LoadingSubtitle = "by Manus",
+    Theme = "Ocean", -- Set theme to Ocean for blue color
+    ConfigurationSaving = {
+        Enabled = true,
+        FolderName = "OrbitScript",
+        FileName = "Config"
+    },
+    Discord = {
+        Enabled = false,
+        Invite = "",
+        RememberJoins = true
+    },
+    KeySystem = false
+})
+
+local MainTab = Window:CreateTab("Main", 4483362458)
+local Section = MainTab:CreateSection("Orbit Settings")
+
+-- Variables
+local OrbitEnabled = true -- Initial state from image
+local OrbitSpeed = 209 -- Initial speed from image
+local OrbitDistance = 5 -- Initial distance from image
+local TargetPlayerName = ""
+local RunService = game:GetService("RunService")
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+-- Orbit Logic
+local angle = 0
+local orbitConnection
+
+local function startOrbit()
+    if orbitConnection then orbitConnection:Disconnect() end
+    
+    orbitConnection = RunService.Heartbeat:Connect(function(dt)
+        if not OrbitEnabled or TargetPlayerName == "" then return end
+        
+        local targetPlayer = Players:FindFirstChild(TargetPlayerName)
+        if targetPlayer and targetPlayer.Character and targetPlayer.Character:FindFirstChild("HumanoidRootPart") then
+            local targetHRP = targetPlayer.Character.HumanoidRootPart
+            local localHRP = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+            
+            if localHRP then
+                angle = angle + (OrbitSpeed / 100) * dt * 10 -- Adjusting speed scale
+                local x = math.cos(angle) * OrbitDistance
+                local z = math.sin(angle) * OrbitDistance
+                
+                localHRP.CFrame = CFrame.new(targetHRP.Position + Vector3.new(x, 0, z), targetHRP.Position)
+                localHRP.Velocity = Vector3.new(0, 0, 0) -- Prevent physics interference
+            end
+        end
+    end)
+end
+
+local function stopOrbit()
+    if orbitConnection then
+        orbitConnection:Disconnect()
+        orbitConnection = nil
+    end
+end
+
+-- UI Elements
+local Toggle = MainTab:CreateToggle({
+    Name = "Enable Orbit",
+    CurrentValue = true, -- Initial state from image
+    Flag = "OrbitToggle",
+    Callback = function(Value)
+        OrbitEnabled = Value
+        if OrbitEnabled then
+            startOrbit()
+        else
+            stopOrbit()
+        end
+    end,
+})
+
+local SpeedSlider = MainTab:CreateSlider({
+    Name = "Orbit Speed",
+    Range = {0, 1000},
+    Increment = 1,
+    Suffix = "Speed",
+    CurrentValue = 209, -- Initial speed from image
+    Flag = "SpeedSlider",
+    Callback = function(Value)
+        OrbitSpeed = Value
+    end,
+})
+
+local DistanceSlider = MainTab:CreateSlider({
+    Name = "Orbit Distance",
+    Range = {0, 1000},
+    Increment = 1,
+    Suffix = "Studs",
+    CurrentValue = 5, -- Initial distance from image
+    Flag = "DistanceSlider",
+    Callback = function(Value)
+        OrbitDistance = Value
+    end,
+})
+
+-- Player Selection Dropdown
+local function getPlayerList()
+    local list = {}
+    for _, player in pairs(Players:GetPlayers()) do
+        if player ~= LocalPlayer then
+            table.insert(list, player.Name)
+        end
+    end
+    return list
+end
+
+local PlayerDropdown = MainTab:CreateDropdown({
+    Name = "Select Target Player",
+    Options = getPlayerList(),
+    CurrentOption = {""},
+    MultipleOptions = false,
+    Flag = "PlayerDropdown",
+    Callback = function(Options)
+        TargetPlayerName = Options[1]
+    end,
+})
+
+-- Refresh Player List Button
+local RefreshButton = MainTab:CreateButton({
+    Name = "Refresh Player List",
+    Callback = function()
+        PlayerDropdown:Refresh(getPlayerList())
+    end,
+})
+
+-- Notification
+Rayfield:Notify({
+    Title = "Script Loaded",
+    Content = "Orbit Script is ready!",
+    Duration = 5,
+    Image = 4483362458,
+})
+
+Rayfield:LoadConfiguration()
+
+-- Start orbit if enabled initially
+if OrbitEnabled and TargetPlayerName ~= "" then
+    startOrbit()
+end
